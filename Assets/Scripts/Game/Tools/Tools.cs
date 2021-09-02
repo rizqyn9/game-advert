@@ -19,6 +19,12 @@ public class Tools : MonoBehaviour
     [SerializeField] bool isDragged;
     [SerializeField] List<GameObject> machine;
 
+    public LayerMask layerMask = 6;
+   
+
+    [Header("Debug")]
+    public MachineType stateMachine;
+
 
     private void Awake()
     {
@@ -28,6 +34,13 @@ public class Tools : MonoBehaviour
     private void OnMouseDown()
     {
         isDragged = true;
+    }
+
+    private void Update()
+    {
+        //getPlacement();
+        Debug.DrawRay(transform.position, Vector2.zero);
+
     }
 
     private void OnMouseDrag()
@@ -43,13 +56,27 @@ public class Tools : MonoBehaviour
 
     private void OnMouseUp()
     {
-        float distance = Vector2.Distance(machine[0].transform.position, transform.position);
-        if(distance < 1.0f)
-        {
-            transform.parent = machine[0].transform;
-            Debug.Log("snap");
-        }
+        getPlacement();
         isDragged = false;
     }
 
+    private void getPlacement()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
+        if (hit)
+        {
+            Debug.Log(hit.transform.gameObject.name);
+            hit.transform.gameObject.GetComponent<Machine>().toolRequest(this.gameObject);
+            transform.parent = hit.transform;
+
+        } else
+        {
+            resetPlacement();
+        }
+    }
+
+    private void resetPlacement()
+    {
+        transform.position = initialPosition;
+    }
 }
