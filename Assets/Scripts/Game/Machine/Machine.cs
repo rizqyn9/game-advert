@@ -12,6 +12,7 @@ public class Machine : MonoBehaviour
 {
     public MachineType machineType;
     public Transform toolPlacement;
+    public bool onProcess = false;
 
     [Header("Debug")]
     public GameObject toolsNow;

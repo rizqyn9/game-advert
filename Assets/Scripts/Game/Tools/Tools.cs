@@ -9,21 +9,27 @@ public enum ToolsType : byte
     CUP
 }
 
+public struct ListIgredients
+{
+
+}
+
 public class Tools : MonoBehaviour
 {
     public delegate void DragEndDelegate(Tools draggableObject);
     public DragEndDelegate dragEndDelegate;
 
     public ToolsType toolsType;
-    [SerializeField] Vector3 initialPosition;
+    public Vector3 initialPosition;
     [SerializeField] bool isDragged;
-    [SerializeField] List<GameObject> machine;
 
     public LayerMask layerMask = 6;
    
 
     [Header("Debug")]
     public MachineType stateMachine;
+    public GameObject machineGO;
+    public Machine machine;
 
 
     private void Awake()
@@ -39,8 +45,6 @@ public class Tools : MonoBehaviour
     private void Update()
     {
         //getPlacement();
-        Debug.DrawRay(transform.position, Vector2.zero);
-
     }
 
     private void OnMouseDrag()
@@ -65,9 +69,10 @@ public class Tools : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
         if (hit)
         {
-            Debug.Log(hit.transform.gameObject.name);
-            hit.transform.gameObject.GetComponent<Machine>().toolRequest(this.gameObject);
-            transform.parent = hit.transform;
+            //Debug.Log(hit.transform.gameObject.name);
+            machineGO = hit.transform.gameObject;
+            machine = machineGO.GetComponent<Machine>();
+            machine.toolRequest(this.gameObject);
 
         } else
         {
