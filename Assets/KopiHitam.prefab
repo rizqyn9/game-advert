@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nametag: KopiHitam
+  fadeSpeed: 0.1
 --- !u!50 &2844181417751150999
 Rigidbody2D:
   serializedVersion: 4

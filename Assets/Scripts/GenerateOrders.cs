@@ -22,7 +22,7 @@ public class GenerateOrders : MonoBehaviour
 
     IEnumerator Spawner()
     {
-        while (ordersQuantity < 3)
+        while (ordersQuantity < 10)
         {
             ordersToGenerate = Random.Range(1, 1);
             int xPos = Random.Range(-7, 7);
