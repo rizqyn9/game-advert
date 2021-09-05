@@ -6,6 +6,8 @@ TagManager:
   tags:
   - KopiHitam
   - OrderKopiH
+  - Grinder
+  - CoffeeMaker
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Machine
   - 
   - 
   - 

@@ -22,6 +22,9 @@ public class Beans : MonoBehaviour
     public Vector2 lastPosition;
     [SerializeField] LayerMask machineLayerMask;
 
+    private Grinder grinder;
+    private CoffeeMaker coffeeMaker;
+
 
     private void Awake()
     {
@@ -71,13 +74,14 @@ public class Beans : MonoBehaviour
         //Debug.Log("get Placement");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, machineLayerMask);
 
-        if (hit && hit.collider.CompareTag("Grinder"))
+        if (hit && hit.collider.CompareTag("Grinder") && beanState == BeanState.BEANS)
         {
             Debug.Log("grind");
             getGrinder(hit.transform.gameObject);
-        } else if (hit && hit.collider.CompareTag("CoffeeMaker"))
+        } else if (beanState == BeanState.POWDER && hit && hit.collider.CompareTag("CoffeeMaker") && beanState == BeanState.POWDER)
         {
-            Debug.Log("grind");
+            Debug.Log("coffemaker");
+            getCoffeeMaker(hit.transform.gameObject);
 
         }
         else
@@ -89,7 +93,8 @@ public class Beans : MonoBehaviour
     #region ON GRINDER
     private void getGrinder(GameObject _grinder)
     {
-        _grinder.GetComponent<Grinder>().reqInput(this.gameObject);
+        grinder = _grinder.GetComponent<Grinder>();
+        grinder.reqInput(this.gameObject);
         isDragable = false;
     }
 
@@ -101,9 +106,32 @@ public class Beans : MonoBehaviour
         transform.position = _transformParent.position;
 
         isDragable = true;
+        beanState = BeanState.POWDER;
     }
     #endregion
 
+    #region ON COFFEE MAKER
+
+    private void getCoffeeMaker(GameObject _coffeeMaker)
+    {
+        coffeeMaker = _coffeeMaker.GetComponent<CoffeeMaker>();
+        if (coffeeMaker.isAcceptable(true))
+        {
+            coffeeMaker.beanInput(this);
+        } else
+        {
+            resetPlacement();
+        }
+    }
+
+    public void inputCoffeeMaker(CoffeeMaker _coffeeMaker)
+    {
+        coffeeMaker = _coffeeMaker;
+        transform.parent = _coffeeMaker.inputPowder;
+        transform.position = _coffeeMaker.inputPowder.position;
+    }
+
+    #endregion
 
     private void resetPlacement()
     {

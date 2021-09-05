@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public struct Recipe
+{
+    public BeansType beansType;
+    public BeanState beanState;
+}
+
 public enum ToolsType : byte
 {
     GLASS,
@@ -24,12 +31,14 @@ public class Tools : MonoBehaviour
     [SerializeField] bool isDragged;
 
     public LayerMask layerMask = 6;
-   
+
+    public Recipe recipe;
 
     [Header("Debug")]
     public MachineType stateMachine;
     public GameObject machineGO;
     public Machine machine;
+    public CoffeeMaker coffeeMaker;
 
 
     private void Awake()
@@ -67,17 +76,24 @@ public class Tools : MonoBehaviour
     private void getPlacement()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
-        if (hit)
+        if (hit.collider.CompareTag("CoffeeMaker"))
         {
-            //Debug.Log(hit.transform.gameObject.name);
-            machineGO = hit.transform.gameObject;
-            machine = machineGO.GetComponent<Machine>();
-            machine.toolRequest(this.gameObject);
+            coffeeMaker = hit.transform.gameObject.GetComponent<CoffeeMaker>();
+
+            if (coffeeMaker.isAcceptable(false))
+            {
+                coffeeMaker.toolOnAccept(this);
+            }
 
         } else
         {
             resetPlacement();
         }
+    }
+
+    public void onCoffeeMaker()
+    {
+
     }
 
     private void resetPlacement()

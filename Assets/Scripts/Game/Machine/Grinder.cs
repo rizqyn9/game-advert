@@ -42,7 +42,7 @@ public class Grinder : MonoBehaviour
         // Set Child
         beans.gameObject.transform.parent = inputBeans;
         beans.gameObject.transform.position = inputBeans.position;
-        StartCoroutine(animate(true));
+        //StartCoroutine(animate(true));
 
         clearProcess();
 
@@ -50,7 +50,8 @@ public class Grinder : MonoBehaviour
 
     private void clearProcess()
     {
-        StartCoroutine(animate(false));
+        //StartCoroutine(animate(false));
+        outputHandler();
     }
 
     IEnumerator animate(bool input)
@@ -89,8 +90,6 @@ public class Grinder : MonoBehaviour
     {
         beans.grinderOutput(outputPowder);
         BoxCollider2D.enabled = false;
-
-
     }
 
 }
