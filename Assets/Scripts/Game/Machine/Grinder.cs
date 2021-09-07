@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Game;
 public class Grinder : MonoBehaviour
 {
     public Machine machine;
@@ -29,9 +29,9 @@ public class Grinder : MonoBehaviour
         //Debug.Log("req beans to grind");
 
         //validate reqyest from benas
-        if (machine.onProcess || inputBeans.childCount > 0) return;
+        //if (machine.onProcess || inputBeans.childCount > 0) return;
 
-        machine.onProcess = true;
+        //machine.onProcess = true;
         beans = _beans.GetComponent<Beans>();
         runningProcess();
     }

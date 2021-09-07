@@ -10,6 +10,12 @@ public enum BeanState : byte
     POWDER,
 }
 
+public enum BeansType : byte
+{
+    ARABICA,
+    ROBUSTA
+}
+
 
 public class Beans : MonoBehaviour
 {

@@ -1,13 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public enum BeansType : byte
-{
-    ARABICA,
-    ROBUSTA
-}
 
 /**
  * if OnProcess return warning
@@ -15,33 +8,47 @@ public enum BeansType : byte
  * Run method transition => duration / animation (use Coroutine)
  * 
  */
-
-public class BeansMachine : MonoBehaviour
+namespace Game
 {
-    public bool onProcess = false;
-    public BeansType beansType;
-    public GameObject beansPrefab;
-    public Transform output;
-    public int beans;
-
-    [SerializeField] bool _isFilled;
-
-    // Call on user click the machine button
-    public void OnMouseDown()
+    public class BeansMachine : Machine
     {
-        if (onProcess) return;
+        [Header("Properties")]
+        public MachineType machineType;
+        public BeansType beansType;
+        public GameObject beansPrefab;
+        public Transform output;
 
-        // Check fill output
-        if (output.childCount > 0) return;
+        [Header("DEBUG")]
+        [SerializeField] bool _isFilled;
 
-        // Spawn beans
-        SpawnBeans();
+        public void OnMouseDown()
+        {
+            machineState = MachineState.ON_VALIDATE;
+        }
+
+        public void SpawnBeans()
+        {
+            GameObject beansOut = Instantiate(beansPrefab, output);
+            beansOut.GetComponent<Beans>().Init(beansType);
+        }
+
+        public override void onValidate()
+        {
+            if (machineState != MachineState.ON_IDLE
+                && output.childCount > 0
+                )
+            {
+                Debug.Log("Beans Already");
+                return;
+            }
+
+            machineState = MachineState.ON_PROCESS;
+        }
+
+        public override void onProcess()
+        {
+            SpawnBeans();
+            machineState = MachineState.ON_IDLE;
+        }
     }
-
-    public void SpawnBeans()
-    {
-        GameObject beansOut = Instantiate(beansPrefab, output);
-        beansOut.GetComponent<Beans>().Init(beansType);
-    }
-
 }
