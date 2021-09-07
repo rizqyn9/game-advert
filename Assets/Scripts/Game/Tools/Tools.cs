@@ -31,12 +31,14 @@ public class Tools : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] bool isDragged;
+    [SerializeField] SpriteRenderer spriteRenderer;
     public Vector3 lastPosition;
-    public MachineType stateMachine;
-    public GameObject machineGO;
+    //public GameObject machineGO;
     public CoffeeMaker coffeeMaker;
+    public Plate plate;
+    public FreshMilk freshMilk;
 
-
+    #region DRAG
     private void Awake()
     {
         lastPosition = transform.position;
@@ -67,6 +69,8 @@ public class Tools : MonoBehaviour
         Desk.Instance.updateDesk();
     }
 
+    #endregion
+
     private void getPlacement()
     {
         try
@@ -75,15 +79,34 @@ public class Tools : MonoBehaviour
             if (
                 hit
                 && hit.collider.CompareTag("CoffeeMaker")
-                && hit.transform.gameObject.GetComponent<CoffeeMaker>().isValidated(false)
+                && hit.transform.GetComponent<CoffeeMaker>().isValidated(false)
                 )
             {
                 onCoffeeMaker(hit.transform.GetComponent<CoffeeMaker>());
-            } else if (hit && hit.collider.CompareTag("Trash"))
+            } else if (
+                hit
+                && hit.collider.CompareTag("Trash")
+                )
             {
                 Trash.Instance.onTrash(toolsType);
                 Debug.Log("Trashh");
                 Destroy(this.gameObject);
+            } else if (
+                hit
+                && hit.collider.CompareTag("Plate")
+                && hit.transform.GetComponent<Plate>().isValidated()
+                )
+            {
+                Debug.Log("Plate");
+                onPlate(hit.transform.GetComponent<Plate>());
+            } else if (
+                hit
+                && hit.collider.CompareTag("FreshMilk")
+                && hit.transform.GetComponent<FreshMilk>()
+                )
+            {
+                Debug.Log("freshmik");
+                onFreshMilk(hit.transform.GetComponent<FreshMilk>());
             }
             else
             {
@@ -98,11 +121,33 @@ public class Tools : MonoBehaviour
         }
     }
 
+    #region onCoffeeMaker
     public void onCoffeeMaker(CoffeeMaker _coffeeMaker)
     {
         coffeeMaker = _coffeeMaker;
         coffeeMaker.onToolInput(this);
     }
+    #endregion
+
+    #region onPlate
+    void onPlate(Plate _plate)
+    {
+        plate = _plate;
+        plate.onInput(this);
+    }
+    #endregion
+
+    #region OnFreshMilk
+    public void onFreshMilk(FreshMilk _freshMilk)
+    {
+        Debug.Log("onFreshMilk");
+        freshMilk = _freshMilk;
+        freshMilk.tools = this;
+        freshMilk.machineState = MachineState.ON_INPUT;
+    }
+    #endregion
+
+    #region Depends
 
     private void resetPlacement()
     {
@@ -111,6 +156,7 @@ public class Tools : MonoBehaviour
 
     public void transformTool(Transform _transform)
     {
+        Debug.Log("asdasdad");
         transform.parent = _transform;
         transform.position = _transform.position;
         lastPosition = _transform.position;
@@ -121,4 +167,6 @@ public class Tools : MonoBehaviour
         Debug.Log("On destroy tool");
         //Desk.Instance.updateDesk();
     }
+
+    #endregion
 }

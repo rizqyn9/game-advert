@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7519786702683802963}
   - component: {fileID: 7519786702683802962}
   - component: {fileID: 7519786702683802961}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Glass
-  m_TagString: Untagged
+  m_TagString: Tool
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -443991971
+  m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -97,18 +97,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolsType: 0
-  initialPosition: {x: 0, y: 0, z: 0}
-  isDragged: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 64
   recipe:
     beansType: 0
     beanState: 0
+  isDragged: 0
+  spriteRenderer: {fileID: 0}
+  lastPosition: {x: 0, y: 0, z: 0}
   stateMachine: 0
   machineGO: {fileID: 0}
-  machine: {fileID: 0}
   coffeeMaker: {fileID: 0}
+  plate: {fileID: 0}
 --- !u!61 &7519786702683802961
 BoxCollider2D:
   m_ObjectHideFlags: 0

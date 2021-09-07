@@ -9,6 +9,9 @@ TagManager:
   - Grinder
   - CoffeeMaker
   - Trash
+  - Tool
+  - FreshMilk
+  - Plate
   layers:
   - Default
   - TransparentFX

@@ -16,26 +16,26 @@ namespace Game
         {
             // validate beans
             if (isBeansChecker
-                && beans
-                && !tools
-                && inputPowderPos.childCount > 0
-                && toolPlacePos.childCount < 1
+                && !beans
+                && tools
                 )
             {
-                Debug.Log("Beans validated");
-                return false;
-            }
+                Debug.Log("Tools validated");
+                return true;
+            } else 
             // validate tools
             if (!isBeansChecker
-                && beans
-                && tools
-                && inputPowderPos.childCount > 0
-                && toolPlacePos.childCount > 0
+                && !beans
+                && !tools
                 )
             {
+                Debug.Log("Tools validated");
+                return true;
+            } else
+            {
+                Debug.Log("Beans not validated");
                 return false;
             }
-            return true;
         }
 
         public override void onInput()
@@ -60,8 +60,8 @@ namespace Game
         {
             tools.recipe.beanState = beans.beanState;
             tools.recipe.beansType = beans.beansType;
-            Destroy(beans.gameObject);
             base.onProcess();
+            Destroy(beans.gameObject);
         }
     }
 }

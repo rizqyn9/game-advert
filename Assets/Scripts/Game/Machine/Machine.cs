@@ -4,6 +4,8 @@ public enum MachineType
 {
     GRINDER,
     COFFEE_MAKER,
+    FRESHMILK
+
 }
 
 public enum MachineState
@@ -82,7 +84,7 @@ namespace Game
 
         public virtual void onInput() {
             Debug.Log("onInput");
-            onInput();
+            onProcess();
         }
 
         public virtual void onProcess() {
@@ -91,6 +93,7 @@ namespace Game
         }
 
         public virtual void onDone() {
+            boxCollider2D.enabled = false;
             Debug.Log("onDone");
         }
 
