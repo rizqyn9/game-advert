@@ -3,144 +3,148 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum BeanState : byte
+namespace Game
 {
-    BEANS,
-    POWDER,
-}
-
-public enum BeansType : byte
-{
-    ARABICA,
-    ROBUSTA
-}
-
-
-public class Beans : MonoBehaviour
-{
-    public BeansType beansType;
-    public BeanState beanState;
-    public List<Sprite> spriteList;
-    public SpriteRenderer spriteRenderer;
-    public bool isDragged;
-    public bool isDragable = true;
-    public Vector2 lastPosition;
-    [SerializeField] LayerMask machineLayerMask;
-
-    private Grinder grinder;
-    private CoffeeMaker coffeeMaker;
-
-
-    private void Awake()
+    public enum BeanState : byte
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        lastPosition = transform.position;
+        BEANS,
+        POWDER,
     }
 
-    private void Update()
+    public enum BeansType : byte
     {
-        //getPlacement();
+        ARABICA,
+        ROBUSTA
     }
 
-    // Trigger from BeanMachine on Instantiate
-    public void Init(BeansType _beansType)
+
+    public class Beans : MonoBehaviour
     {
-        beansType = _beansType;
-        if(beansType == BeansType.ARABICA)
+        [Header("Properties")]
+        public BeansType beansType;
+        public BeanState beanState;
+        public List<Sprite> spriteList;
+        public SpriteRenderer spriteRenderer;
+        [Header("Debug")]
+        public bool isDragged;
+        public bool isDragable = true;
+        public Vector2 lastPosition;
+        [SerializeField] LayerMask machineLayerMask;
+
+        private Grinder grinder;
+        private CoffeeMaker coffeeMaker;
+
+
+        private void Awake()
         {
-            spriteRenderer.color = Color.yellow;
-        } else
-        {
-            spriteRenderer.color = Color.grey;
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            lastPosition = transform.position;
         }
-    }
 
-    public void OnMouseDown() => isDragged = true;
-
-    private void OnMouseDrag()
-    {
-        //Debug.Log("dragBeans");
-        if (isDragged)
+        private void Update()
         {
-            // create object follow pointer and set middle object from pointer
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            transform.Translate(mousePos);
+            //getPlacement();
         }
-    }
 
-    private void OnMouseUp()
-    {
-        getPlacement();
-        isDragged = false;
-    }
-
-    private void getPlacement()
-    {
-        //Debug.Log("get Placement");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, machineLayerMask);
-
-        if (hit && hit.collider.CompareTag("Grinder") && beanState == BeanState.BEANS)
+        // Trigger from BeanMachine on Instantiate
+        public void Init(BeansType _beansType)
         {
-            Debug.Log("grind");
-            getGrinder(hit.transform.gameObject);
-        } else if (beanState == BeanState.POWDER && hit && hit.collider.CompareTag("CoffeeMaker") && beanState == BeanState.POWDER)
-        {
-            Debug.Log("coffemaker");
-            getCoffeeMaker(hit.transform.gameObject);
-
+            beansType = _beansType;
+            if(beansType == BeansType.ARABICA)
+            {
+                spriteRenderer.color = Color.yellow;
+            } else
+            {
+                spriteRenderer.color = Color.grey;
+            }
         }
-        else
+
+        public void OnMouseDown() => isDragged = true;
+
+        private void OnMouseDrag()
         {
-            resetPlacement();
+            //Debug.Log("dragBeans");
+            if (isDragged)
+            {
+                // create object follow pointer and set middle object from pointer
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                transform.Translate(mousePos);
+            }
         }
-    }
 
-    #region ON GRINDER
-    private void getGrinder(GameObject _grinder)
-    {
-        grinder = _grinder.GetComponent<Grinder>();
-        grinder.reqInput(this.gameObject);
-        isDragable = false;
-    }
-
-    public void grinderOutput(Transform _transformParent)
-    {
-        lastPosition = _transformParent.position;
-
-        transform.parent = _transformParent.parent;
-        transform.position = _transformParent.position;
-
-        isDragable = true;
-        beanState = BeanState.POWDER;
-    }
-    #endregion
-
-    #region ON COFFEE MAKER
-
-    private void getCoffeeMaker(GameObject _coffeeMaker)
-    {
-        coffeeMaker = _coffeeMaker.GetComponent<CoffeeMaker>();
-        if (coffeeMaker.isAcceptable(true))
+        private void OnMouseUp()
         {
-            coffeeMaker.beanInput(this);
-        } else
-        {
-            resetPlacement();
+            getPlacement();
+            isDragged = false;
         }
-    }
 
-    public void inputCoffeeMaker(CoffeeMaker _coffeeMaker)
-    {
-        coffeeMaker = _coffeeMaker;
-        transform.parent = _coffeeMaker.inputPowder;
-        transform.position = _coffeeMaker.inputPowder.position;
-    }
+        private void getPlacement()
+        {
+            //Debug.Log("get Placement");
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, machineLayerMask);
 
-    #endregion
+            if (hit && hit.collider.CompareTag("Grinder") && beanState == BeanState.BEANS)
+            {
+                Debug.Log("grind");
+                getGrinder(hit.transform.gameObject);
+            } else if (beanState == BeanState.POWDER && hit && hit.collider.CompareTag("CoffeeMaker") && beanState == BeanState.POWDER)
+            {
+                Debug.Log("coffemaker");
+                getCoffeeMaker(hit.transform.gameObject);
 
-    private void resetPlacement()
-    {
-        transform.position = lastPosition;
+            }
+            else
+            {
+                resetPlacement();
+            }
+        }
+
+        #region ON GRINDER
+        private void getGrinder(GameObject _grinder)
+        {
+            grinder = _grinder.GetComponent<Grinder>();
+            grinder.reqInput(this.gameObject);
+            isDragable = false;
+        }
+
+        public void grinderOutput(Transform _transformParent)
+        {
+            lastPosition = _transformParent.position;
+
+            transform.parent = _transformParent.parent;
+            transform.position = _transformParent.position;
+
+            isDragable = true;
+            beanState = BeanState.POWDER;
+        }
+        #endregion
+
+        #region ON COFFEE MAKER
+
+        private void getCoffeeMaker(GameObject _coffeeMaker)
+        {
+            coffeeMaker = _coffeeMaker.GetComponent<CoffeeMaker>();
+            if (coffeeMaker.isAcceptable(true))
+            {
+                coffeeMaker.beanInput(this);
+            } else
+            {
+                resetPlacement();
+            }
+        }
+
+        public void inputCoffeeMaker(CoffeeMaker _coffeeMaker)
+        {
+            coffeeMaker = _coffeeMaker;
+            transform.parent = _coffeeMaker.inputPowder;
+            transform.position = _coffeeMaker.inputPowder.position;
+        }
+
+        #endregion
+
+        private void resetPlacement()
+        {
+            transform.position = lastPosition;
+        }
     }
 }

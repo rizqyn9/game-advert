@@ -1,95 +1,104 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Game;
-public class Grinder : MonoBehaviour
+
+namespace Game
 {
-    public Machine machine;
-    public Transform inputBeans;
-    public Transform outputPowder;
-    public BeansType beansType;
-    public Beans beans;
-    public BoxCollider2D BoxCollider2D;
-
-    private void Awake()
+    public class Grinder : Machine
     {
-        machine = GetComponent<Machine>();
-        BoxCollider2D = GetComponent<BoxCollider2D>();
-    }
+        [Header("Properties")]
+        public MachineType machineType;
+        public Transform inputBeans;
+        public Transform outputPowder;
 
+        [Header("Debug")]
+        public Machine machine;
+        public BoxCollider2D BoxCollider2D;
+        public Beans beans;
 
-    /** Validate acceptable Beans
-     *  if (tools  == null) => return 'Put tools please'
-     *  if (tools already) => nextProcess
-     */
-
-    public void reqInput(GameObject _beans)
-    {
-        //Debug.Log("req beans to grind");
-
-        //validate reqyest from benas
-        //if (machine.onProcess || inputBeans.childCount > 0) return;
-
-        //machine.onProcess = true;
-        beans = _beans.GetComponent<Beans>();
-        runningProcess();
-    }
-
-    // Do something
-    public void runningProcess()
-    {
-        // Set Child
-        beans.gameObject.transform.parent = inputBeans;
-        beans.gameObject.transform.position = inputBeans.position;
-        //StartCoroutine(animate(true));
-
-        clearProcess();
-
-    }
-
-    private void clearProcess()
-    {
-        //StartCoroutine(animate(false));
-        outputHandler();
-    }
-
-    IEnumerator animate(bool input)
-    {
-        SpriteRenderer renderer = beans.gameObject.GetComponent<SpriteRenderer>();
-        Color color = renderer.material.color;
-
-        if (input)
+        private void Awake()
         {
-            Debug.Log("nput");
-            for (float f = 1f; f >= 0; f -= 0.1f)
-            {
-                color.a = f;
-                renderer.material.color = color;
-                yield return new WaitForSeconds(.1f);
-            }
+            machine = GetComponent<Machine>();
+            BoxCollider2D = GetComponent<BoxCollider2D>();
+        }
 
-            yield return new WaitForSeconds(1f);
-        } else
+
+        /** Validate acceptable Beans
+         *  if (tools  == null) => return 'Put tools please'
+         *  if (tools already) => nextProcess
+         */
+
+        public override void onValidate()
         {
-            yield return new WaitForSeconds(5f);
-            Debug.Log("out");
+            
+        }
+
+        public void reqInput(GameObject _beans)
+        {
+            //Debug.Log("req beans to grind");
+
+            //validate reqyest from benas
+            //if (machine.onProcess || inputBeans.childCount > 0) return;
+
+            //machine.onProcess = true;
+            beans = _beans.GetComponent<Beans>();
+            runningProcess();
+        }
+
+        // Do something
+        public void runningProcess()
+        {
+            // Set Child
+            beans.gameObject.transform.parent = inputBeans;
+            beans.gameObject.transform.position = inputBeans.position;
+            //StartCoroutine(animate(true));
+
+            clearProcess();
+
+        }
+
+        private void clearProcess()
+        {
+            //StartCoroutine(animate(false));
             outputHandler();
-            color.r = 200f; 
-            for (float f = 0f; f >= 0; f += 0.1f)
+        }
+
+        IEnumerator animate(bool input)
+        {
+            SpriteRenderer renderer = beans.gameObject.GetComponent<SpriteRenderer>();
+            Color color = renderer.material.color;
+
+            if (input)
             {
-                color.a = f;
-                renderer.material.color = color;
-                yield return new WaitForSeconds(.1f);
+                Debug.Log("nput");
+                for (float f = 1f; f >= 0; f -= 0.1f)
+                {
+                    color.a = f;
+                    renderer.material.color = color;
+                    yield return new WaitForSeconds(.1f);
+                }
+
+                yield return new WaitForSeconds(1f);
+            } else
+            {
+                yield return new WaitForSeconds(5f);
+                Debug.Log("out");
+                outputHandler();
+                color.r = 200f; 
+                for (float f = 0f; f >= 0; f += 0.1f)
+                {
+                    color.a = f;
+                    renderer.material.color = color;
+                    yield return new WaitForSeconds(.1f);
+                }
             }
+
+        }
+
+        public void outputHandler()
+        {
+            beans.grinderOutput(outputPowder);
+            BoxCollider2D.enabled = false;
         }
 
     }
-
-    public void outputHandler()
-    {
-        beans.grinderOutput(outputPowder);
-        BoxCollider2D.enabled = false;
-    }
-
 }
