@@ -13,7 +13,6 @@ namespace Game
     public class BeansMachine : Machine
     {
         [Header("Properties")]
-        public MachineType machineType;
         public BeansType beansType;
         public GameObject beansPrefab;
         public Transform output;
@@ -32,7 +31,7 @@ namespace Game
             beansOut.GetComponent<Beans>().Init(beansType);
         }
 
-        public override void onValidate()
+        public override void onValidate(GameObject gameObject = null)
         {
             if (machineState != MachineState.ON_IDLE
                 && output.childCount > 0

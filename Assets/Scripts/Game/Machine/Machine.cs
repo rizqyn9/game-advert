@@ -22,6 +22,13 @@ namespace Game
     {
         [Header("Machine")]
         [SerializeField] MachineState _machineState = MachineState.ON_IDLE;
+        public MachineType machineType;
+        public BoxCollider2D boxCollider2D;
+
+        private void Awake()
+        {
+            boxCollider2D = GetComponent<BoxCollider2D>();
+        }
 
         public MachineState machineState
         {
@@ -44,7 +51,7 @@ namespace Game
                     onInput();
                     break;
                 case MachineState.ON_DONE:
-                    onValidate();
+                    onDone();
                     break;
                 case MachineState.ON_PROCESS:
                     onProcess();
@@ -62,19 +69,20 @@ namespace Game
          * Tools On changed
          */
         public virtual void onChanged() {
-            Debug.Log("onChanged");
+            //Debug.Log("onChanged");
         }
 
         public virtual void onIdle() {
             Debug.Log("onIdle");
         }
 
-        public virtual void onValidate() {
+        public virtual void onValidate(GameObject gameObject = null) {
             Debug.Log("onValidate");
         }
 
         public virtual void onInput() {
             Debug.Log("onInput");
+            onInput();
         }
 
         public virtual void onProcess() {
@@ -88,6 +96,7 @@ namespace Game
 
         public virtual void onOutput() {
             Debug.Log("onOutput");
+            boxCollider2D.enabled = true;
         }
 
 

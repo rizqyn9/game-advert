@@ -1,58 +1,67 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Game;
 
-public class CoffeeMaker : MonoBehaviour
+namespace Game
 {
-    [Header("Properties")]
-    public Transform inputPowder;
-    public Transform toolPlace;
-
-    [Header("Debug")]
-    public Machine machine;
-    [SerializeField] Beans beans;
-    [SerializeField] Tools tools;
-
-    private void Awake()
+    public class CoffeeMaker : Machine
     {
-        machine = GetComponent<Machine>();
-    }
+        [Header("Properties")]
+        public Transform inputPowderPos;
+        public Transform toolPlacePos;
 
-    public bool isAcceptable(bool isBeans)
-    {
-        //if (machine.onProcess) return false;
-        // Beans validate
-        if (isBeans && toolPlace.childCount == 1 && inputPowder.childCount < 1) return true;
-        // Tools validate
-        if (!isBeans && toolPlace.childCount < 1) return true;
-        return false;
-    }
+        [Header("Debug")]
+        public Beans beans;
+        public Tools tools;
 
-    public void toolOnAccept(Tools _tools)
-    {
-        tools = _tools;
-        _tools.gameObject.transform.parent = toolPlace;
-        _tools.gameObject.transform.position = toolPlace.position;
-    }
+        public bool isValidated(bool isBeansChecker)
+        {
+            // validate beans
+            if (isBeansChecker
+                && beans
+                && !tools
+                && inputPowderPos.childCount > 0
+                && toolPlacePos.childCount < 1
+                )
+            {
+                Debug.Log("Beans validated");
+                return false;
+            }
+            // validate tools
+            if (!isBeansChecker
+                && beans
+                && tools
+                && inputPowderPos.childCount > 0
+                && toolPlacePos.childCount > 0
+                )
+            {
+                return false;
+            }
+            return true;
+        }
 
-    public void beanInput(Beans _beans)
-    {
-        //validate reqyest from benas
-        //Debug.Log("req powder to coffeeMaker");
-        beans = _beans;
-        beans.inputCoffeeMaker(this);
+        public override void onInput()
+        {
+            base.onInput();
+        }
 
-        onProcessCoffeeMaker();
-    }
+        public void onToolInput(Tools _tools)
+        {
+            tools = _tools;
+            tools.transformTool(toolPlacePos);
+        }
 
-    private void onProcessCoffeeMaker()
-    {
-        //Do Something
-        //machine.onProcess = true;
-        Destroy(beans.gameObject);
-        tools.recipe.beanState = beans.beanState;
-        tools.recipe.beansType = beans.beansType;
+        public void onBeansInput(Beans _beans)
+        {
+            beans = _beans;
+            beans.inputCoffeeMaker(this);
+            beans.transformBeans(inputPowderPos);
+        }
+
+        public override void onProcess()
+        {
+            tools.recipe.beanState = beans.beanState;
+            tools.recipe.beansType = beans.beansType;
+            Destroy(beans.gameObject);
+            base.onProcess();
+        }
     }
 }

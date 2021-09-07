@@ -22,28 +22,24 @@ public struct ListIgredients
 
 public class Tools : MonoBehaviour
 {
-    public delegate void DragEndDelegate(Tools draggableObject);
-    public DragEndDelegate dragEndDelegate;
-
     [Header("Properties field")]
     public ToolsType toolsType;
-    public Vector3 initialPosition;
-    [SerializeField] bool isDragged;
     public LayerMask layerMask = 6;
 
     [Header("Recipe")]
     public Recipe recipe;
 
     [Header("Debug")]
+    [SerializeField] bool isDragged;
+    public Vector3 lastPosition;
     public MachineType stateMachine;
     public GameObject machineGO;
-    public Machine machine;
     public CoffeeMaker coffeeMaker;
 
 
     private void Awake()
     {
-        initialPosition = transform.position;
+        lastPosition = transform.position;
     }
 
     private void OnMouseDown()
@@ -76,10 +72,13 @@ public class Tools : MonoBehaviour
         try
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
-            if (hit && hit.collider.CompareTag("CoffeeMaker") && hit.transform.gameObject.GetComponent<CoffeeMaker>().isAcceptable(false))
+            if (
+                hit
+                && hit.collider.CompareTag("CoffeeMaker")
+                && hit.transform.gameObject.GetComponent<CoffeeMaker>().isValidated(false)
+                )
             {
-                coffeeMaker = hit.transform.GetComponent<CoffeeMaker>();
-                coffeeMaker.toolOnAccept(this);
+                onCoffeeMaker(hit.transform.GetComponent<CoffeeMaker>());
             } else if (hit && hit.collider.CompareTag("Trash"))
             {
                 Trash.Instance.onTrash(toolsType);
@@ -99,19 +98,27 @@ public class Tools : MonoBehaviour
         }
     }
 
-    public void onCoffeeMaker()
+    public void onCoffeeMaker(CoffeeMaker _coffeeMaker)
     {
+        coffeeMaker = _coffeeMaker;
+        coffeeMaker.onToolInput(this);
+    }
 
+    private void resetPlacement()
+    {
+        transform.position = lastPosition;
+    }
+
+    public void transformTool(Transform _transform)
+    {
+        transform.parent = _transform;
+        transform.position = _transform.position;
+        lastPosition = _transform.position;
     }
 
     private void OnDestroy()
     {
         Debug.Log("On destroy tool");
         //Desk.Instance.updateDesk();
-    }
-
-    private void resetPlacement()
-    {
-        transform.position = initialPosition;
     }
 }

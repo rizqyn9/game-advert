@@ -346,11 +346,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa23c5a217304262ad6bb4142aea8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onProcess: 0
+  _machineState: 0
+  machineType: 0
+  boxCollider2D: {fileID: 0}
   beansType: 0
   beansPrefab: {fileID: 3034974716388290785, guid: 16da72e9ce0fc4e3ead8e3e50484b602, type: 3}
   output: {fileID: 1190709436}
-  beans: 0
   _isFilled: 0
 --- !u!61 &819600250
 BoxCollider2D:
@@ -509,7 +510,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 893317673}
-  - component: {fileID: 893317674}
   - component: {fileID: 893317675}
   - component: {fileID: 893317676}
   m_Layer: 6
@@ -536,22 +536,6 @@ Transform:
   m_Father: {fileID: 1907027894}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &893317674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893317672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f4b8c67d81634da6a628babcb529fd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  machineType: 1
-  toolPlacement: {fileID: 512524661}
-  onProcess: 0
-  toolsNow: {fileID: 0}
 --- !u!61 &893317675
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -590,9 +574,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1e379b814c4441d6b2080afa34dd60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputPowder: {fileID: 1900795084}
-  toolPlace: {fileID: 512524661}
-  machine: {fileID: 0}
+  _machineState: 0
+  machineType: 1
+  boxCollider2D: {fileID: 0}
+  inputPowderPos: {fileID: 1900795084}
+  toolPlacePos: {fileID: 512524661}
   beans: {fileID: 0}
   tools: {fileID: 0}
 --- !u!1 &949686285
@@ -1236,7 +1222,7 @@ GameObject:
   - component: {fileID: 1777480428}
   - component: {fileID: 1777480429}
   m_Layer: 0
-  m_Name: place
+  m_Name: Output
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1317,7 +1303,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1881999511}
   - component: {fileID: 1881999512}
-  - component: {fileID: 1881999514}
   - component: {fileID: 1881999513}
   m_Layer: 6
   m_Name: --Grinder
@@ -1355,12 +1340,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44382ac2965cc46be92b1db5b8f00a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  machine: {fileID: 1881999514}
-  inputBeans: {fileID: 331277946}
-  outputPowder: {fileID: 1777480428}
-  beansType: 0
+  _machineState: 0
+  machineType: 0
+  boxCollider2D: {fileID: 0}
+  inputBeansPos: {fileID: 331277946}
+  outputPowderPos: {fileID: 1777480428}
   beans: {fileID: 0}
-  BoxCollider2D: {fileID: 0}
 --- !u!61 &1881999513
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1387,22 +1372,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.0403492}
   m_EdgeRadius: 0
---- !u!114 &1881999514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881999510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f4b8c67d81634da6a628babcb529fd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  machineType: 0
-  toolPlacement: {fileID: 1777480428}
-  onProcess: 0
-  toolsNow: {fileID: 0}
 --- !u!1 &1900795083
 GameObject:
   m_ObjectHideFlags: 0
