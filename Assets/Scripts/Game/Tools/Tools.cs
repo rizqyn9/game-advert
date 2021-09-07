@@ -37,6 +37,8 @@ public class Tools : MonoBehaviour
     public CoffeeMaker coffeeMaker;
     public Plate plate;
     public FreshMilk freshMilk;
+    public WhippedCream whippedCream;
+    public Syrup syrup;
 
     #region DRAG
     private void Awake()
@@ -107,6 +109,22 @@ public class Tools : MonoBehaviour
             {
                 Debug.Log("freshmik");
                 onFreshMilk(hit.transform.GetComponent<FreshMilk>());
+            } else if (
+                hit
+                && hit.collider.CompareTag("WhippedCream")
+                && hit.transform.GetComponent<WhippedCream>()
+                )
+            {
+                Debug.Log("WhippedCream");
+                onWhippedCream(hit.transform.GetComponent<WhippedCream>());
+            } else if (
+                hit
+                && hit.collider.CompareTag("Syrup")
+                && hit.transform.GetComponent<Syrup>()
+                )
+            {
+                Debug.Log("Syrup");
+                onSyrup(hit.transform.GetComponent<Syrup>());
             }
             else
             {
@@ -120,6 +138,7 @@ public class Tools : MonoBehaviour
             resetPlacement();
         }
     }
+
 
     #region onCoffeeMaker
     public void onCoffeeMaker(CoffeeMaker _coffeeMaker)
@@ -144,6 +163,25 @@ public class Tools : MonoBehaviour
         freshMilk = _freshMilk;
         freshMilk.tools = this;
         freshMilk.machineState = MachineState.ON_INPUT;
+    }
+    #endregion
+
+    #region OnWhippedCream
+    private void onWhippedCream(WhippedCream _whippedCream)
+    {
+        whippedCream = _whippedCream;
+        whippedCream.tools = this;
+        whippedCream.machineState = MachineState.ON_INPUT;
+    }
+
+    #endregion
+
+    #region OnSyrup
+    private void onSyrup(Syrup _syrup)
+    {
+        syrup = _syrup;
+        syrup.tools = this;
+        syrup.machineState = MachineState.ON_INPUT;
     }
     #endregion
 

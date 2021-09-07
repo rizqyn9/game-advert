@@ -12,6 +12,7 @@ TagManager:
   - Tool
   - FreshMilk
   - Plate
+  - Syrup
   layers:
   - Default
   - TransparentFX

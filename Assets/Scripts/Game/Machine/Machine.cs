@@ -4,7 +4,9 @@ public enum MachineType
 {
     GRINDER,
     COFFEE_MAKER,
-    FRESHMILK
+    FRESHMILK,
+    WHIPPED_CREAM,
+    SYRUP
 
 }
 
