@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 [Serializable]
 public struct Recipe
@@ -10,7 +9,7 @@ public struct Recipe
     public BeanState beanState;
 }
 
-public enum ToolsType : byte
+public enum ToolsType
 {
     GLASS,
     CUP
@@ -26,12 +25,13 @@ public class Tools : MonoBehaviour
     public delegate void DragEndDelegate(Tools draggableObject);
     public DragEndDelegate dragEndDelegate;
 
+    [Header("Properties field")]
     public ToolsType toolsType;
     public Vector3 initialPosition;
     [SerializeField] bool isDragged;
-
     public LayerMask layerMask = 6;
 
+    [Header("Recipe")]
     public Recipe recipe;
 
     [Header("Debug")]
@@ -51,11 +51,6 @@ public class Tools : MonoBehaviour
         isDragged = true;
     }
 
-    private void Update()
-    {
-        //getPlacement();
-    }
-
     private void OnMouseDrag()
     {
         if (isDragged)
@@ -71,22 +66,35 @@ public class Tools : MonoBehaviour
     {
         getPlacement();
         isDragged = false;
+
+        // Update desk 
+        Desk.Instance.updateDesk();
     }
 
     private void getPlacement()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
-        if (hit.collider.CompareTag("CoffeeMaker"))
+        try
         {
-            coffeeMaker = hit.transform.gameObject.GetComponent<CoffeeMaker>();
-
-            if (coffeeMaker.isAcceptable(false))
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
+            if (hit && hit.collider.CompareTag("CoffeeMaker") && hit.transform.gameObject.GetComponent<CoffeeMaker>().isAcceptable(false))
             {
+                coffeeMaker = hit.transform.GetComponent<CoffeeMaker>();
                 coffeeMaker.toolOnAccept(this);
+            } else if (hit && hit.collider.CompareTag("Trash"))
+            {
+                Trash.Instance.onTrash(toolsType);
+                Debug.Log("Trashh");
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                throw new Exception();
             }
 
-        } else
+        }
+        catch
         {
+            Debug.Log("reset");
             resetPlacement();
         }
     }
@@ -94,6 +102,12 @@ public class Tools : MonoBehaviour
     public void onCoffeeMaker()
     {
 
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("On destroy tool");
+        //Desk.Instance.updateDesk();
     }
 
     private void resetPlacement()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class CoffeeMaker : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class CoffeeMaker : MonoBehaviour
 
     public bool isAcceptable(bool isBeans)
     {
-        if (machine.onProcess) return false;
+        //if (machine.onProcess) return false;
         // Beans validate
         if (isBeans && toolPlace.childCount == 1 && inputPowder.childCount < 1) return true;
         // Tools validate
@@ -49,7 +50,7 @@ public class CoffeeMaker : MonoBehaviour
     private void onProcessCoffeeMaker()
     {
         //Do Something
-        machine.onProcess = true;
+        //machine.onProcess = true;
         Destroy(beans.gameObject);
         tools.recipe.beanState = beans.beanState;
         tools.recipe.beansType = beans.beansType;

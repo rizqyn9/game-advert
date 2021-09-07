@@ -8,6 +8,7 @@ TagManager:
   - OrderKopiH
   - Grinder
   - CoffeeMaker
+  - Trash
   layers:
   - Default
   - TransparentFX
