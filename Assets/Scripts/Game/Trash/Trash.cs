@@ -2,24 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trash : MonoBehaviour
+namespace Game
 {
-    private static Trash _instance;
-    public static Trash Instance { get { return _instance; } }
-
-    private void Awake()
+    public class Trash : MonoBehaviour
     {
-        if (_instance != null && _instance != this)
+        [ContextMenu("test")]
+        public void test()
         {
-            Destroy(this.gameObject);
+            BuyerResource.Instance.test();
         }
-        else
+
+        private static Trash _instance;
+        public static Trash Instance { get { return _instance; } }
+
+        private void Awake()
         {
-            _instance = this;
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
         }
-    }
-    public void onTrash(ToolsType toolsType) {
-        //Desk.Instance.respawnTools(toolsType);
-        Debug.Log("trashh");
+        public void onTrash(ToolsType toolsType) {
+            //Desk.Instance.respawnTools(toolsType);
+            Debug.Log("trashh");
+        }
     }
 }

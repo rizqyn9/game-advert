@@ -2,60 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Desk : MonoBehaviour
+namespace Game
 {
-    private static Desk _instance;
-    public static Desk Instance { get { return _instance; } }
 
-    [Header("Property field")]
-    public GameObject glassPrefab;
-    public GameObject cupPrefab;
-    public Transform glassPos;
-    public Transform cupPos;
-
-    private void Awake()
+    public class Desk : MonoBehaviour
     {
-        if (_instance != null && _instance != this)
+        private static Desk _instance;
+        public static Desk Instance { get { return _instance; } }
+
+        [Header("Property field")]
+        public GameObject glassPrefab;
+        public GameObject cupPrefab;
+        public Transform glassPos;
+        public Transform cupPos;
+
+        private void Awake()
         {
-            Destroy(this.gameObject);
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
         }
-        else
+
+        private void Start()
         {
-            _instance = this;
+            updateDesk();
         }
-    }
 
-    private void Start()
-    {
-        updateDesk();
-    }
-
-    private void Update()
-    {
-        updateDesk();
-    }
-    public void updateDesk()
-    {
-        //Debug.Log("updateDesk");
-        if (glassPos.childCount < 1) respawnTools(ToolsType.GLASS);
-        if (cupPos.childCount < 1) respawnTools(ToolsType.CUP);
-    }
-
-    public void respawnTools(ToolsType _toolsType)
-    {
-        //Debug.Log("asdad");
-        switch (_toolsType)
+        private void Update()
         {
-            case ToolsType.GLASS:
-                Instantiate(glassPrefab, glassPos);
-                break;
+            updateDesk();
+        }
+        public void updateDesk()
+        {
+            //Debug.Log("updateDesk");
+            if (glassPos.childCount < 1) respawnTools(ToolsType.GLASS);
+            if (cupPos.childCount < 1) respawnTools(ToolsType.CUP);
+        }
 
-            case ToolsType.CUP:
-                Instantiate(cupPrefab, cupPos);
-                break;
+        public void respawnTools(ToolsType _toolsType)
+        {
+            //Debug.Log("asdad");
+            switch (_toolsType)
+            {
+                case ToolsType.GLASS:
+                    Instantiate(glassPrefab, glassPos);
+                    break;
 
-            default:
-                throw new System.Exception("respawn Error");
+                case ToolsType.CUP:
+                    Instantiate(cupPrefab, cupPos);
+                    break;
+
+                default:
+                    throw new System.Exception("respawn Error");
+            }
         }
     }
 }
