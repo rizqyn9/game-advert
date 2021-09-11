@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class BuyerHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public BuyerPrototype buyerPrototype;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
         
     }

@@ -78,6 +78,7 @@ namespace Game
         {
             try
             {
+                
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
                 if (
                     hit

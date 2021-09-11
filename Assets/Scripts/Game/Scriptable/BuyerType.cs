@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum buyerType
+public enum enumBuyerType
 {
     BUYER_1,
     BUYER_2
@@ -10,12 +10,11 @@ public enum buyerType
 
 
 [CreateAssetMenu(fileName = "Buyer", menuName = "scriptable/buyer")]
-public class Buyer : ScriptableObject
+public class BuyerType : ScriptableObject
 {
     [Header("Properties")]
-    public buyerType buyerType;
+    public enumBuyerType enumBuyerType;
     public int difficulty;
     public int minCost;
     public int maxCost;
-    
 }

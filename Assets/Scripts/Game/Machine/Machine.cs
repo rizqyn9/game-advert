@@ -69,21 +69,31 @@ namespace Game
             }
         }
 
-        /**
-         * Tools On changed
-         */
+        /// <summary>
+        /// trigger every state changed
+        /// </summary>
         public virtual void onChanged() {
             //Debug.Log("onChanged");
         }
 
+        /// <summary>
+        /// trigger when state on machine state on Idle
+        /// </summary>
         public virtual void onIdle() {
             Debug.Log("onIdle");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObject try to validating before init on Machine"></param>
         public virtual void onValidate(GameObject gameObject = null) {
             Debug.Log("onValidate");
         }
 
+        /// <summary>
+        /// trigger when 
+        /// </summary>
         public virtual void onInput() {
             Debug.Log("onInput");
             onProcess();

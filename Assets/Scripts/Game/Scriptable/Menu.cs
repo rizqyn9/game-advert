@@ -11,8 +11,12 @@ public class Menu : ScriptableObject
     public List<enumIgrendients> igrendients;
     public int difficulty;
     public GameObject menuPrefab;
+    public string description;
 }
 
+/// <summary>
+/// List menu classification
+/// </summary>
 public enum menuClassification
 {
     COFFEE,
@@ -21,6 +25,9 @@ public enum menuClassification
     MILKSHAKE
 }
 
+/// <summary>
+/// List for igrendients menu
+/// </summary>
 public enum enumIgrendients
 {
     FRESHMILK,
@@ -44,7 +51,11 @@ public enum enumIgrendients
     BEANS_ROBUSTA
 }
 
-public enum menuListName
+
+/// <summary>
+/// List menu registered
+/// </summary>
+public enum menuListName : int
 {
     LATTE_MATCHA,
     LATTE_RED_VELVET,

@@ -4,28 +4,12 @@ using UnityEngine;
 
 namespace Game
 {
-    public class Trash : MonoBehaviour
+    public class Trash : Singleton<Trash>
     {
-        [ContextMenu("test")]
-        public void test()
-        {
-            BuyerResource.Instance.test();
-        }
-
-        private static Trash _instance;
-        public static Trash Instance { get { return _instance; } }
-
-        private void Awake()
-        {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                _instance = this;
-            }
-        }
+        /// <summary>
+        /// Trigger when Tools / Igrendients drop on Trash
+        /// </summary>
+        /// <param name="toolsType"></param>
         public void onTrash(ToolsType toolsType) {
             //Desk.Instance.respawnTools(toolsType);
             Debug.Log("trashh");
