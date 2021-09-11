@@ -7,6 +7,7 @@ namespace Game
     public class FreshMilk : Machine
     {
         [Header("Properties")]
+        public enumIgrendients resIgrendients;
         public Transform toolPos;
         public GameObject milkPrefab;
 
@@ -38,7 +39,8 @@ namespace Game
 
         public override void onDone()
         {
-            tools.addInnerTool(milkPrefab);
+            tools.listIgrendients.Add(resIgrendients);
+            GameObject go = Instantiate(milkPrefab, tools.igrendientsParent);
             base.onDone();
         }
 

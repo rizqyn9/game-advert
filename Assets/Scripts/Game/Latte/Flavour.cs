@@ -5,45 +5,36 @@ using UnityEngine;
 
 namespace Game
 {
-    public class Flavour : MonoBehaviour
+    public class Flavour : Draggable
     {
         [Header("Properties")]
         public LayerMask toolLayerMask;
+        public GameObject prefabOnTool;
+        public enumIgrendients resIgrendients;
 
         [Header("Debug")]
         public FlavourContainer flavourContainer;
-        public bool isDragged;
-        [SerializeField] Vector2 lastPosition;
+        public Sprite spriteOnTool;
+        [SerializeField] Tools tools;
         [SerializeField] SpriteRenderer spriteRenderer;
-        [SerializeField] BoxCollider2D boxCollider2D;
 
-        private void Awake()
+        public override void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            boxCollider2D = GetComponent<BoxCollider2D>();
-            lastPosition = transform.position;
+            base.Awake();
         }
 
-        private void OnMouseDown()
+        public override void OnMouseDown()
         {
-            isDragged = true;
             spriteRenderer.enabled = true;
+            base.OnMouseDown();
         }
 
-        private void OnMouseDrag()
-        {
-            if (isDragged)
-            {
-                // create object follow pointer and set middle object from pointer
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                transform.Translate(mousePos);
-            }
-        }
-
-        private void OnMouseUp()
+        public override void OnMouseUp()
         {
             getPlacement();
-            isDragged = false;
+            spriteRenderer.enabled = false;
+            base.OnMouseUp();
         }
 
         private void getPlacement()
@@ -52,12 +43,13 @@ namespace Game
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, toolLayerMask);
 
-                if ( hit
+                if (hit
                     && hit.collider.CompareTag("Tool")
+                    && hit.collider.GetComponent<Tools>().isValidated()
                     )
                 {
                     Debug.Log("hahah");
-
+                    getTools(hit.transform.GetComponent<Tools>());
                 } else
                 {
                     throw new Exception();
@@ -69,9 +61,22 @@ namespace Game
             }
         }
 
+        private void getTools(Tools _tools)
+        {
+            tools = _tools;
+            tools.listIgrendients.Add(resIgrendients);
+            Debug.Log("spawn");
+            GameObject go = Instantiate(prefabOnTool, tools.igrendientsParent);
+            SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
+            renderer.sprite = spriteOnTool;
+            renderer.enabled = true;
+        }
+
         private void resetPlacement()
         {
-            transform.position = lastPosition;
+            Debug.Log("rest");
+            gameObject.transform.position = lastPosition;
+            spriteRenderer.enabled = false;
         }
     }
 }

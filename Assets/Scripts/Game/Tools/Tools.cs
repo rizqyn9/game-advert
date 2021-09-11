@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -16,10 +17,6 @@ namespace Game
         CUP
     }
 
-    public struct ListIgredients
-    {
-
-    }
 
     public class Tools : Draggable
     {
@@ -30,6 +27,7 @@ namespace Game
 
         [Header("Recipe")]
         public Recipe recipe;
+        public List<enumIgrendients> listIgrendients;
 
         [Header("Debug")]
         [SerializeField] SpriteRenderer spriteRenderer;
@@ -183,9 +181,11 @@ namespace Game
 
         #endregion
 
-        public void addInnerTool(GameObject _go)
+        #region Flavour
+        public bool isValidated()
         {
-            Instantiate(_go, igrendientsParent);
+            return true;
         }
+        #endregion
     }
 }

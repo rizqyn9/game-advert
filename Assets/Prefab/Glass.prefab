@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2405227402209463541}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7519786702683802960}
   m_RootOrder: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1ef81e11dd61844298cbdb0d8f632cd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed2c7e1c6354b4e639facf0d6a79689f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,7 +123,7 @@ SpriteMask:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1ef81e11dd61844298cbdb0d8f632cd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed2c7e1c6354b4e639facf0d6a79689f, type: 3}
   m_MaskAlphaCutoff: 0.2
   m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 0
@@ -209,6 +209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076e1a80ffe8c48e7a8a8c549df86079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragged: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boxCollider2D: {fileID: 0}
   toolsType: 0
   igrendientsParent: {fileID: 361083506737556713}
   layerMask:
@@ -217,9 +220,8 @@ MonoBehaviour:
   recipe:
     beansType: 0
     beanState: 0
-  isDragged: 0
+  listIgrendients: 
   spriteRenderer: {fileID: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
   coffeeMaker: {fileID: 0}
   plate: {fileID: 0}
   freshMilk: {fileID: 0}

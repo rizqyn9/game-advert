@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
+    public struct flavourSprite
+    {
+        public FlavourType flavourType;
+        public Sprite sprite;
+    }
+
     public enum FlavourType : byte
     {
         LATTE_RED_VELVET,
@@ -21,9 +28,11 @@ namespace Game
         public FlavourType flavourType;
         public Transform spawnPos;
         public GameObject spawnObject;
+        public List<flavourSprite> spriteFlavourData;
 
         [Header("Debug")]
         [SerializeField] Flavour flavour;
+        [SerializeField] flavourSprite flavourSprite;
 
         private void Awake()
         {
@@ -36,6 +45,8 @@ namespace Game
             {
                 Debug.Log("Spawn Flavour");
                 flavour = Instantiate(spawnObject, spawnPos).GetComponent<Flavour>();
+                flavourSprite = spriteFlavourData.Find(res => res.flavourType == flavourType);
+                flavour.spriteOnTool = flavourSprite.sprite;
                 flavour.flavourContainer = this;
             }
         }

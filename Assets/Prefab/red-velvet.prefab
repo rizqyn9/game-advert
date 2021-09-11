@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -443991971
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
   m_Color: {r: 0.8490566, g: 0.38047346, b: 0.38047346, a: 1}
@@ -122,11 +122,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75585fd7a40e4a54b378f7d9f58fb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragged: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boxCollider2D: {fileID: 0}
   toolLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  prefabOnTool: {fileID: 5609951926239194787, guid: b9cd5da935e1143129acb8c7afc953b4, type: 3}
+  resIgrendients: 0
   flavourContainer: {fileID: 0}
-  isDragged: 0
-  lastPosition: {x: 0, y: 0}
+  tools: {fileID: 0}
   spriteRenderer: {fileID: 0}
-  boxCollider2D: {fileID: 0}
