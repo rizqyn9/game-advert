@@ -2,7 +2,10 @@ using UnityEngine;
 
 public abstract class Singleton<T>: MonoBehaviour where T : Component
 {
-    public virtual bool isDestroyed() => false;
+    /// <summary>
+    /// Temporary turn off
+    /// </summary>
+    //public abstract bool isDestroyed();
 
     private static T _instance;
     public static T Instance {

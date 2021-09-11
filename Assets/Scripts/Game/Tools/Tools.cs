@@ -21,59 +21,32 @@ namespace Game
 
     }
 
-    public class Tools : MonoBehaviour
+    public class Tools : Draggable
     {
         [Header("Properties field")]
         public ToolsType toolsType;
+        public Transform igrendientsParent;
         public LayerMask layerMask = 6;
 
         [Header("Recipe")]
         public Recipe recipe;
 
         [Header("Debug")]
-        [SerializeField] bool isDragged;
         [SerializeField] SpriteRenderer spriteRenderer;
-        public Vector3 lastPosition;
-        //public GameObject machineGO;
         public CoffeeMaker coffeeMaker;
         public Plate plate;
         public FreshMilk freshMilk;
         public WhippedCream whippedCream;
         public Syrup syrup;
 
-        #region DRAG
-        private void Awake()
+        public override void OnMouseUp()
         {
-            lastPosition = transform.position;
-        }
-
-        private void OnMouseDown()
-        {
-            isDragged = true;
-        }
-
-        private void OnMouseDrag()
-        {
-            if (isDragged)
-            {
-                // create object follow pointer and set middle object from pointer
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                transform.Translate(mousePos);
-
-            }       
-        }
-
-        private void OnMouseUp()
-        {
+            base.OnMouseUp();
             getPlacement();
-            isDragged = false;
-
-            // Update desk 
             Desk.Instance.updateDesk();
         }
 
-        #endregion
-
+        #region Placement
         private void getPlacement()
         {
             try
@@ -140,7 +113,7 @@ namespace Game
                 resetPlacement();
             }
         }
-
+        #endregion
 
         #region onCoffeeMaker
         public void onCoffeeMaker(CoffeeMaker _coffeeMaker)
