@@ -182,5 +182,10 @@ namespace Game
         }
 
         #endregion
+
+        public void addInnerTool(GameObject _go)
+        {
+            Instantiate(_go, igrendientsParent);
+        }
     }
 }

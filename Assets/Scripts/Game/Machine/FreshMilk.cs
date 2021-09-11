@@ -8,6 +8,7 @@ namespace Game
     {
         [Header("Properties")]
         public Transform toolPos;
+        public GameObject milkPrefab;
 
         [Header("Debug")]
         public Tools tools;
@@ -37,6 +38,7 @@ namespace Game
 
         public override void onDone()
         {
+            tools.addInnerTool(milkPrefab);
             base.onDone();
         }
 
