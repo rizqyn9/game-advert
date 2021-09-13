@@ -26,6 +26,7 @@ namespace Game
     {
         [Header("Properties")]
         public FlavourType flavourType;
+        public enumIgrendients resIgrendients;
         public Transform spawnPos;
         public GameObject spawnObject;
         public List<flavourSprite> spriteFlavourData;
@@ -48,6 +49,7 @@ namespace Game
                 flavourSprite = spriteFlavourData.Find(res => res.flavourType == flavourType);
                 flavour.spriteOnTool = flavourSprite.sprite;
                 flavour.flavourContainer = this;
+                flavour.resIgrendients = resIgrendients;
             }
         }
 

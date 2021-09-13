@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9067763a26724729928556175e73603, type: 3}
-  m_Name: Menu 2
+  m_Name: Latte3
   m_EditorClassIdentifier: 
   nameMenu: 
-  menuListName: 2
+  menuListName: 1
   menuClassifications: 2
-  igrendients: 00000000010000000d000000
+  igrendients: 00000000010000000b000000
   difficulty: 0
+  menuSprite: {fileID: 21300000, guid: fa305097e817349f4a81286033266ed1, type: 3}
   menuPrefab: {fileID: 0}
+  description: 

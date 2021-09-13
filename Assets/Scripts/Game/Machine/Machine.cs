@@ -6,7 +6,8 @@ public enum MachineType
     COFFEE_MAKER,
     FRESHMILK,
     WHIPPED_CREAM,
-    SYRUP
+    SYRUP,
+    MILK_STEAM
 
 }
 

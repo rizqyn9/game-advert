@@ -6,13 +6,13 @@ using UnityEngine;
 public struct BuyerPrototype
 {
     public enumBuyerType enumBuyerType;
-    public List<menuListName> menuListName;
+    public List<Menu> menuListName;
 }
 
 public class BuyerSpawner : Singleton<BuyerSpawner>
 {
     [Header("Properties")]
-    public int maxBuyer = 3;
+    public int maxBuyer = 2;
     public GameObject buyerPrefab;
     public Transform[] spawnPlace;
 
@@ -25,15 +25,17 @@ public class BuyerSpawner : Singleton<BuyerSpawner>
     private void Start()
     {
         buyerResourceCount = BuyerResource.Instance.buyers.Count;
-        menuResourceRegistered = System.Enum.GetNames(typeof(menuListName)).Length;
+        menuResourceRegistered = MenuResource.Instance.menus.Count;
 
         for(int i = 0; i < maxBuyer; i++)
         {
             BuyerPrototype _buyerPrototype = new BuyerPrototype();
             _buyerPrototype.enumBuyerType = enumBuyerType.BUYER_1;
-            _buyerPrototype.menuListName = getMenu(Random.Range(1,4));
+            _buyerPrototype.menuListName = getMenu(Random.Range(1,3));
             GameObject go = Instantiate(buyerPrefab, spawnPlace[i]);
-            go.GetComponent<BuyerHandler>().buyerPrototype = _buyerPrototype;
+            BuyerHandler buyerHandler = go.GetComponent<BuyerHandler>();
+            buyerHandler.buyerPrototype = _buyerPrototype;
+            buyerHandler.instanceListMenu();
         }
     }
 
@@ -42,12 +44,12 @@ public class BuyerSpawner : Singleton<BuyerSpawner>
     /// </summary>
     /// <param name="_total"></param>
     /// <returns></returns>
-    public List<menuListName> getMenu(int _total)
+    public List<Menu> getMenu(int _total)
     {
-        List<menuListName> menuGen = new List<menuListName>();
+        List<Menu> menuGen = new List<Menu>();
         while(_total != 0)
         {
-            menuGen.Add((menuListName)Random.Range(0, menuResourceRegistered));
+            menuGen.Add(MenuResource.Instance.menus[Random.Range(0, menuResourceRegistered)]);
             _total--;
         }
         return menuGen;

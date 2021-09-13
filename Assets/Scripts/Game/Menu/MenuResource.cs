@@ -14,8 +14,5 @@ public class MenuResource : Singleton<MenuResource>
         Debug.Log("Load All Menu");
         menus = Resources.LoadAll<Menu>("Menu").ToList();
     }
-
-    private void Start()
-    {
-    }
+    
 }

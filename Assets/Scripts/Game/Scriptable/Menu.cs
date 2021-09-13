@@ -10,6 +10,7 @@ public class Menu : ScriptableObject
     public menuClassification menuClassifications;
     public List<enumIgrendients> igrendients;
     public int difficulty;
+    public Sprite menuSprite;
     public GameObject menuPrefab;
     public string description;
 }
@@ -28,7 +29,7 @@ public enum menuClassification
 /// <summary>
 /// List for igrendients menu
 /// </summary>
-public enum enumIgrendients
+public enum enumIgrendients : int
 {
     FRESHMILK,
     MILK_STEAMMED,

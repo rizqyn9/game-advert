@@ -65,11 +65,12 @@ namespace Game
         {
             tools = _tools;
             tools.listIgrendients.Add(resIgrendients);
-            Debug.Log("spawn");
+
             GameObject go = Instantiate(prefabOnTool, tools.igrendientsParent);
             SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
             renderer.sprite = spriteOnTool;
             renderer.enabled = true;
+            boxCollider2D.enabled = false;
         }
 
         private void resetPlacement()

@@ -24,6 +24,7 @@ namespace Game
         public ToolsType toolsType;
         public Transform igrendientsParent;
         public LayerMask layerMask = 6;
+        public LayerMask custLayerMask;
 
         [Header("Recipe")]
         public Recipe recipe;
@@ -36,6 +37,7 @@ namespace Game
         public FreshMilk freshMilk;
         public WhippedCream whippedCream;
         public Syrup syrup;
+        public MilkSteam milkSteam;
 
         public override void OnMouseUp()
         {
@@ -49,61 +51,16 @@ namespace Game
         {
             try
             {
-                
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
-                if (
-                    hit
-                    && hit.collider.CompareTag("CoffeeMaker")
-                    && hit.transform.GetComponent<CoffeeMaker>().isValidated(false)
-                    )
+                RaycastHit2D custHit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, custLayerMask);
+                if (custHit)
                 {
-                    onCoffeeMaker(hit.transform.GetComponent<CoffeeMaker>());
-                } else if (
-                    hit
-                    && hit.collider.CompareTag("Trash")
-                    )
-                {
-                    Trash.Instance.onTrash(toolsType);
-                    Debug.Log("Trashh");
-                    Destroy(this.gameObject);
-                } else if (
-                    hit
-                    && hit.collider.CompareTag("Plate")
-                    && hit.transform.GetComponent<Plate>().isValidated()
-                    )
-                {
-                    Debug.Log("Plate");
-                    onPlate(hit.transform.GetComponent<Plate>());
-                } else if (
-                    hit
-                    && hit.collider.CompareTag("FreshMilk")
-                    && hit.transform.GetComponent<FreshMilk>()
-                    )
-                {
-                    Debug.Log("freshmik");
-                    onFreshMilk(hit.transform.GetComponent<FreshMilk>());
-                } else if (
-                    hit
-                    && hit.collider.CompareTag("WhippedCream")
-                    && hit.transform.GetComponent<WhippedCream>()
-                    )
-                {
-                    Debug.Log("WhippedCream");
-                    onWhippedCream(hit.transform.GetComponent<WhippedCream>());
-                } else if (
-                    hit
-                    && hit.collider.CompareTag("Syrup")
-                    && hit.transform.GetComponent<Syrup>()
-                    )
-                {
-                    Debug.Log("Syrup");
-                    onSyrup(hit.transform.GetComponent<Syrup>());
-                }
-                else
-                {
-                    throw new Exception();
+                    //do Something
+                    Debug.Log("Customer");
+                    custHit.transform.GetComponent<BuyerHandler>().onToolRequest(this);
                 }
 
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
+                raycastMachineHandler(hit);
             }
             catch
             {
@@ -111,6 +68,7 @@ namespace Game
                 resetPlacement();
             }
         }
+
         #endregion
 
         #region onCoffeeMaker
@@ -158,6 +116,13 @@ namespace Game
         }
         #endregion
 
+        private void onSteam(MilkSteam _milkSteam)
+        {
+            milkSteam = _milkSteam;
+            milkSteam.tools = this;
+            milkSteam.machineState = MachineState.ON_INPUT;
+        }
+
         #region Depends
 
         private void resetPlacement()
@@ -184,8 +149,71 @@ namespace Game
         #region Flavour
         public bool isValidated()
         {
+            Debug.Log("Kontol");
             return true;
         }
         #endregion
+
+        private void raycastMachineHandler(RaycastHit2D hit)
+        {
+            if (
+                hit.collider.CompareTag("CoffeeMaker")
+                && hit.transform.GetComponent<CoffeeMaker>().isValidated(false)
+                )
+            {
+                onCoffeeMaker(hit.transform.GetComponent<CoffeeMaker>());
+            }
+            else if (
+              hit.collider.CompareTag("Trash")
+              )
+            {
+                Trash.Instance.onTrash(toolsType);
+                Destroy(this.gameObject);
+            }
+            else if (
+                hit.collider.CompareTag("Plate")
+                && hit.transform.GetComponent<Plate>().isValidated()
+              )
+            {
+                Debug.Log("Plate");
+                onPlate(hit.transform.GetComponent<Plate>());
+            }
+            else if (
+                hit.collider.CompareTag("FreshMilk")
+                && hit.transform.GetComponent<FreshMilk>()
+              )
+            {
+                Debug.Log("freshmik");
+                onFreshMilk(hit.transform.GetComponent<FreshMilk>());
+            }
+            else if (
+                hit.collider.CompareTag("WhippedCream")
+                && hit.transform.GetComponent<WhippedCream>()
+              )
+            {
+                Debug.Log("WhippedCream");
+                onWhippedCream(hit.transform.GetComponent<WhippedCream>());
+            }
+            else if (
+                hit.collider.CompareTag("Syrup")
+                && hit.transform.GetComponent<Syrup>()
+              )
+            {
+                Debug.Log("Syrup");
+                onSyrup(hit.transform.GetComponent<Syrup>());
+            }
+            else if (
+                hit.collider.CompareTag("MilkSteam")
+                && hit.transform.GetComponent<MilkSteam>()
+              )
+            {
+                Debug.Log("MilkSteam");
+                onSteam(hit.transform.GetComponent<MilkSteam>());
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
     }
 }
