@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="Menu", menuName ="scriptable/menu")]
-public class Menu : ScriptableObject
+public class BaseMenu : ScriptableObject
 {
     public string nameMenu;
     public menuListName menuListName;

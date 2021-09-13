@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level", menuName = "scriptable/level")]
-public class Level : ScriptableObject
+public class BaseLevel : ScriptableObject
 {
     [Header("Properties")]
     public int numLevel;

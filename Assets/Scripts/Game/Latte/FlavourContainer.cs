@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +34,12 @@ namespace Game
         [Header("Debug")]
         [SerializeField] Flavour flavour;
         [SerializeField] flavourSprite flavourSprite;
+
+        [ContextMenu("Validate data")]
+        public void GetAllFlavourResources()
+        {
+            Resources.LoadAll<BaseFlavour>("Flavour").ToList();
+        }
 
         private void Awake()
         {

@@ -10,7 +10,7 @@ public enum enumBuyerType
 
 
 [CreateAssetMenu(fileName = "Buyer", menuName = "scriptable/buyer")]
-public class BuyerType : ScriptableObject
+public class BaseBuyer : ScriptableObject
 {
     [Header("Properties")]
     public enumBuyerType enumBuyerType;

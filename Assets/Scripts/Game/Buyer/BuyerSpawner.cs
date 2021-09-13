@@ -6,7 +6,7 @@ using UnityEngine;
 public struct BuyerPrototype
 {
     public enumBuyerType enumBuyerType;
-    public List<Menu> menuListName;
+    public List<BaseMenu> menuListName;
 }
 
 public class BuyerSpawner : Singleton<BuyerSpawner>
@@ -24,8 +24,8 @@ public class BuyerSpawner : Singleton<BuyerSpawner>
 
     private void Start()
     {
-        buyerResourceCount = BuyerResource.Instance.buyers.Count;
-        menuResourceRegistered = MenuResource.Instance.menus.Count;
+        buyerResourceCount = ResourcesManager.Instance.BuyerResources.Count;
+        menuResourceRegistered = ResourcesManager.Instance.BuyerResources.Count;
 
         for(int i = 0; i < maxBuyer; i++)
         {
@@ -44,12 +44,12 @@ public class BuyerSpawner : Singleton<BuyerSpawner>
     /// </summary>
     /// <param name="_total"></param>
     /// <returns></returns>
-    public List<Menu> getMenu(int _total)
+    public List<BaseMenu> getMenu(int _total)
     {
-        List<Menu> menuGen = new List<Menu>();
+        List<BaseMenu> menuGen = new List<BaseMenu>();
         while(_total != 0)
         {
-            menuGen.Add(MenuResource.Instance.menus[Random.Range(0, menuResourceRegistered)]);
+            menuGen.Add(ResourcesManager.Instance.MenuResources[Random.Range(0, menuResourceRegistered)]);
             _total--;
         }
         return menuGen;

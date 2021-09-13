@@ -5,5 +5,5 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
     [Header("Properties")]
-    public Level level;
+    public BaseLevel level;
 }

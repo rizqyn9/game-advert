@@ -26,7 +26,7 @@ public class BuyerHandler : MonoBehaviour
     {
         // doSomething
         Debug.Log("request come from player");
-        foreach(Menu _menu in buyerPrototype.menuListName)
+        foreach (BaseMenu _menu in buyerPrototype.menuListName)
         {
             if(checkerMenu(_menu, _tools.listIgrendients))
             {
@@ -40,7 +40,7 @@ public class BuyerHandler : MonoBehaviour
 
     }
 
-    private bool checkerMenu(Menu _menu, List<enumIgrendients> _igrendients)
+    private bool checkerMenu(BaseMenu _menu, List<enumIgrendients> _igrendients)
     {
         Debug.Log(_igrendients.SequenceEqual(_menu.igrendients));
         return _menu.igrendients.SequenceEqual(_igrendients);
