@@ -4,40 +4,35 @@ using UnityEngine;
 
 namespace Game
 {
-    [Serializable]
-    public struct Recipe
-    {
-        public BeansType beansType;
-        public BeanState beanState;
-    }
-
-    public enum ToolsType
-    {
-        GLASS,
-        CUP
-    }
-
-
     public class Tools : Draggable
     {
         [Header("Properties field")]
-        public ToolsType toolsType;
         public Transform igrendientsParent;
         public LayerMask layerMask = 6;
         public LayerMask custLayerMask;
 
-        [Header("Recipe")]
-        public Recipe recipe;
-        public List<enumIgrendients> listIgrendients;
-
         [Header("Debug")]
+        public List<enumIgrendients> listIgrendients;
+        [SerializeField] Machine _Machine;
         [SerializeField] SpriteRenderer spriteRenderer;
+        public Flavour flavour;
         public CoffeeMaker coffeeMaker;
         public Plate plate;
         public FreshMilk freshMilk;
         public WhippedCream whippedCream;
         public Syrup syrup;
         public MilkSteam milkSteam;
+
+        public Machine machine
+        {
+            get => _Machine;
+            set
+            {
+                // DO SOMETHING
+                if (_Machine) _Machine.machineState = MachineState.ON_DONE;
+                _Machine = value;
+            }
+        }
 
         public override void OnMouseUp()
         {
@@ -52,19 +47,14 @@ namespace Game
             try
             {
                 RaycastHit2D custHit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, custLayerMask);
-                if (custHit)
-                {
-                    //do Something
-                    Debug.Log("Customer");
-                    custHit.transform.GetComponent<BuyerHandler>().onToolRequest(this);
-                }
+                if (custHit) raycastCustomerHandler(custHit);
 
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, layerMask);
-                raycastMachineHandler(hit);
+                if (hit) raycastMachineHandler(hit);
             }
-            catch
+            catch (Exception e)
             {
-                Debug.Log("reset");
+                Debug.LogError(e);
                 resetPlacement();
             }
         }
@@ -91,6 +81,7 @@ namespace Game
         public void onFreshMilk(FreshMilk _freshMilk)
         {
             Debug.Log("onFreshMilk");
+            machine = _freshMilk as Machine;
             freshMilk = _freshMilk;
             freshMilk.tools = this;
             freshMilk.machineState = MachineState.ON_INPUT;
@@ -132,7 +123,6 @@ namespace Game
 
         public void transformTool(Transform _transform)
         {
-            Debug.Log("asdasdad");
             transform.parent = _transform;
             transform.position = _transform.position;
             lastPosition = _transform.position;
@@ -149,13 +139,16 @@ namespace Game
         #region Flavour
         public bool isValidated()
         {
-            Debug.Log("Kontol");
-            return true;
+            if (!flavour                                                        // flavour must set to null
+                && listIgrendients.Contains(enumIgrendients.MILK_STEAMMED)      // tool must have Milk Steammed
+                ) return true;
+            return false;
         }
         #endregion
 
         private void raycastMachineHandler(RaycastHit2D hit)
         {
+            machine = hit.transform.GetComponent<Machine>();
             if (
                 hit.collider.CompareTag("CoffeeMaker")
                 && hit.transform.GetComponent<CoffeeMaker>().isValidated(false)
@@ -164,10 +157,10 @@ namespace Game
                 onCoffeeMaker(hit.transform.GetComponent<CoffeeMaker>());
             }
             else if (
-              hit.collider.CompareTag("Trash")
+                hit.collider.CompareTag("Trash")
               )
             {
-                Trash.Instance.onTrash(toolsType);
+                Trash.Instance.onTrash();
                 Destroy(this.gameObject);
             }
             else if (
@@ -199,7 +192,6 @@ namespace Game
                 && hit.transform.GetComponent<Syrup>()
               )
             {
-                Debug.Log("Syrup");
                 onSyrup(hit.transform.GetComponent<Syrup>());
             }
             else if (
@@ -207,13 +199,19 @@ namespace Game
                 && hit.transform.GetComponent<MilkSteam>()
               )
             {
-                Debug.Log("MilkSteam");
                 onSteam(hit.transform.GetComponent<MilkSteam>());
             }
             else
             {
                 throw new Exception();
             }
+        }
+
+        private void raycastCustomerHandler(RaycastHit2D custHit)
+        {
+            //do Something
+            Debug.Log("Customer");
+            custHit.transform.GetComponent<BuyerHandler>().onToolRequest(this);
         }
     }
 }

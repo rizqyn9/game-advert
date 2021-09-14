@@ -34,5 +34,10 @@ namespace Game
 
             boxCollider2D.enabled = false;
         }
+
+        public override bool isValidatedMachine()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

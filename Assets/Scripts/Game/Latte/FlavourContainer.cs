@@ -4,45 +4,21 @@ using UnityEngine;
 
 namespace Game
 {
-    [System.Serializable]
-    public struct flavourSprite
-    {
-        public FlavourType flavourType;
-        public Sprite sprite;
-    }
-
-    public enum FlavourType : byte
-    {
-        LATTE_RED_VELVET,
-        LATTE_CHOCO,
-        LATTE_TARO,
-        LATTE_MATCHA,
-        SHAKE_MELON,
-        SHAKE_CHOCO,
-        SHAKE_STRAWBERRY
-    }
-
     public class FlavourContainer : MonoBehaviour
     {
         [Header("Properties")]
-        public FlavourType flavourType;
-        public enumIgrendients resIgrendients;
         public Transform spawnPos;
-        public GameObject spawnObject;
-        public List<flavourSprite> spriteFlavourData;
+        public GameObject spawnPowderPrefab;
+        public SpriteRenderer staticSpriteContainer;
 
         [Header("Debug")]
+        [SerializeField] BaseFlavour baseFlavour;
         [SerializeField] Flavour flavour;
-        [SerializeField] flavourSprite flavourSprite;
 
-        [ContextMenu("Validate data")]
-        public void GetAllFlavourResources()
+        public void Init(BaseFlavour _baseFlavour)
         {
-            Resources.LoadAll<BaseFlavour>("Flavour").ToList();
-        }
-
-        private void Awake()
-        {
+            baseFlavour = _baseFlavour;
+            staticSpriteContainer.sprite = baseFlavour.containerSprite;
             spawnFlavour();
         }
 
@@ -51,14 +27,10 @@ namespace Game
             if(spawnPos.childCount == 0)
             {
                 Debug.Log("Spawn Flavour");
-                flavour = Instantiate(spawnObject, spawnPos).GetComponent<Flavour>();
-                flavourSprite = spriteFlavourData.Find(res => res.flavourType == flavourType);
-                flavour.spriteOnTool = flavourSprite.sprite;
+                flavour = Instantiate(spawnPowderPrefab, spawnPos).GetComponent<Flavour>();
+                flavour.baseFlavour = baseFlavour;
                 flavour.flavourContainer = this;
-                flavour.resIgrendients = resIgrendients;
             }
         }
-
-
     }
 }

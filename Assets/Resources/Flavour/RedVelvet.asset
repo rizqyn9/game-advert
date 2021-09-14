@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flavourType: 0
   resIgrendients: 11
-  prefabFlavourOnTool: {fileID: 0}
+  containerSprite: {fileID: 21300000, guid: 574f28a27985e40e9a93419e82d4c0dd, type: 3}
+  powderSprite: {fileID: 21300000, guid: 093bfaf098adf4b1f8474bea2b2cb9c0, type: 3}
+  prefabFlavourOnTool: {fileID: 5906198585633335031, guid: 137a5e979fc8142b4a8fc3ae3d7fc465, type: 3}
+  flavourSpriteOnTool: {fileID: 21300000, guid: 8e1666302ae6043da84fcd313bc17080, type: 3}

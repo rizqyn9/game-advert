@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9632f5d821264e7d9c6b8b3db37788e, type: 3}
+  m_Name: Matcha
+  m_EditorClassIdentifier: 
+  flavourType: 3
+  resIgrendients: 12
+  containerSprite: {fileID: 21300000, guid: 7870dfa48c27f4678904871c52fa271c, type: 3}
+  powderSprite: {fileID: 21300000, guid: 652c5718b20a644c6bd6faa91f50a9ce, type: 3}
+  prefabFlavourOnTool: {fileID: 5906198585633335031, guid: 137a5e979fc8142b4a8fc3ae3d7fc465, type: 3}
+  flavourSpriteOnTool: {fileID: 21300000, guid: 7870dfa48c27f4678904871c52fa271c, type: 3}

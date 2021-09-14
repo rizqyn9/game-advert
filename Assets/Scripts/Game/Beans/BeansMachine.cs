@@ -49,5 +49,10 @@ namespace Game
             SpawnBeans();
             machineState = MachineState.ON_IDLE;
         }
+
+        public override bool isValidatedMachine()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

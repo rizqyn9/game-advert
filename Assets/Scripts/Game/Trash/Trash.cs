@@ -10,7 +10,7 @@ namespace Game
         /// Trigger when Tools / Igrendients drop on Trash
         /// </summary>
         /// <param name="toolsType"></param>
-        public void onTrash(ToolsType toolsType) {
+        public void onTrash() {
             //Desk.Instance.respawnTools(toolsType);
             Debug.Log("trashh");
         }

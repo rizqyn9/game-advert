@@ -2,8 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : Singleton<LevelManager>
+namespace Game
 {
-    [Header("Properties")]
-    public BaseLevel level;
+    public class LevelManager : Singleton<LevelManager>
+    {
+        [Header("Properties")]
+        public BaseLevel level;
+        public List<BaseFlavour> baseFlavours;
+
+        private void Start()
+        {
+            FlavourManager.Instance.instanceFlavourContainer(baseFlavours);
+        }
+    }
 }

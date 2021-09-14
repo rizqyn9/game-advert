@@ -9,12 +9,10 @@ namespace Game
     {
         [Header("Properties")]
         public LayerMask toolLayerMask;
-        public GameObject prefabOnTool;
-        public enumIgrendients resIgrendients;
 
         [Header("Debug")]
+        public BaseFlavour baseFlavour;
         public FlavourContainer flavourContainer;
-        public Sprite spriteOnTool;
         [SerializeField] Tools tools;
         [SerializeField] SpriteRenderer spriteRenderer;
 
@@ -48,15 +46,18 @@ namespace Game
                     && hit.collider.GetComponent<Tools>().isValidated()
                     )
                 {
-                    Debug.Log("hahah");
                     getTools(hit.transform.GetComponent<Tools>());
-                } else
+                }
+                else
                 {
                     throw new Exception();
                 }
             }
-            catch
+            catch(Exception e)
             {
+                // Only for debugging
+                if (e != null)
+                    Debug.LogError(e);
                 resetPlacement();
             }
         }
@@ -64,18 +65,18 @@ namespace Game
         private void getTools(Tools _tools)
         {
             tools = _tools;
-            tools.listIgrendients.Add(resIgrendients);
+            tools.listIgrendients.Add(baseFlavour.resIgrendients);
+            tools.flavour = this;
 
-            GameObject go = Instantiate(prefabOnTool, tools.igrendientsParent);
+            GameObject go = Instantiate(baseFlavour.prefabFlavourOnTool, tools.igrendientsParent);
             SpriteRenderer renderer = go.GetComponent<SpriteRenderer>();
-            renderer.sprite = spriteOnTool;
+            renderer.sprite = baseFlavour.flavourSpriteOnTool;
             renderer.enabled = true;
             boxCollider2D.enabled = false;
         }
 
         private void resetPlacement()
         {
-            Debug.Log("rest");
             gameObject.transform.position = lastPosition;
             spriteRenderer.enabled = false;
         }

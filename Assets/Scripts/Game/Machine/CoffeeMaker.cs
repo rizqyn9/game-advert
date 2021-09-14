@@ -58,10 +58,13 @@ namespace Game
 
         public override void onProcess()
         {
-            tools.recipe.beanState = beans.beanState;
-            tools.recipe.beansType = beans.beansType;
             base.onProcess();
             Destroy(beans.gameObject);
+        }
+
+        public override bool isValidatedMachine()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

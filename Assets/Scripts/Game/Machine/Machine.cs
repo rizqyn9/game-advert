@@ -70,6 +70,8 @@ namespace Game
             }
         }
 
+        public abstract bool isValidatedMachine();
+
         /// <summary>
         /// trigger every state changed
         /// </summary>
