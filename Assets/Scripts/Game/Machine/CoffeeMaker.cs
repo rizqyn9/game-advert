@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CoffeeMaker : Machine
+    public class CoffeeMaker : Machine, ICoffeeMachine
     {
         [Header("Properties")]
         public Transform inputPowderPos;
@@ -12,35 +12,38 @@ namespace Game
         public Beans beans;
         public Tools tools;
 
-        public bool isValidated(bool isBeansChecker)
+        public bool isBeansValidated(Beans _beans)
         {
-            // validate beans
-            if (isBeansChecker
-                && !beans
-                && tools
-                )
+            if (!beans && toolPlacePos.childCount != 0)
             {
-                Debug.Log("Tools validated");
+                Debug.Log("Beans Input");
+                beans = _beans;
+                beans.transformBeans(inputPowderPos);
                 return true;
-            } else 
-            // validate tools
-            if (!isBeansChecker
-                && !beans
-                && !tools
-                )
+            }
+            else
             {
-                Debug.Log("Tools validated");
+                return false;
+            }
+        }
+
+        public override bool isValidatedMachine(Tools _tools)
+        {
+            if (!tools)
+            {
+                tools = _tools;
                 return true;
-            } else
+            }
+            else
             {
-                Debug.Log("Beans not validated");
                 return false;
             }
         }
 
         public override void onInput()
         {
-            base.onInput();
+            Debug.Log("coffee maker input");
+            tools.transformTool(toolPlacePos);
         }
 
         public void onToolInput(Tools _tools)
@@ -52,19 +55,14 @@ namespace Game
         public void onBeansInput(Beans _beans)
         {
             beans = _beans;
-            beans.inputCoffeeMaker(this);
             beans.transformBeans(inputPowderPos);
         }
 
         public override void onProcess()
         {
+            tools.listIgrendients.Add(beans.resIgrendients);
             base.onProcess();
             Destroy(beans.gameObject);
-        }
-
-        public override bool isValidatedMachine()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

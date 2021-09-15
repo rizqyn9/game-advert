@@ -70,7 +70,9 @@ namespace Game
             }
         }
 
-        public abstract bool isValidatedMachine();
+        public virtual bool isValidatedMachine(Tools _tools) {
+            return true;
+        }
 
         /// <summary>
         /// trigger every state changed
@@ -115,6 +117,7 @@ namespace Game
         public virtual void onOutput() {
             Debug.Log("onOutput");
             boxCollider2D.enabled = true;
+            machineState = MachineState.ON_IDLE;
         }
 
 

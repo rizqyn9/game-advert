@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class Grinder : Machine
+    public class Grinder : Machine, ICoffeeMachine
     {
         [Header("Properties")]
         public Transform inputBeansPos;
@@ -11,10 +11,21 @@ namespace Game
         [Header("Debug")]
         public Beans beans;
 
+        public bool isBeansValidated(Beans _beans)
+        {
+            if (outputPowderPos.childCount == 0)
+            {
+                beans = _beans;
+                return true;
+            }
+            else return false;
+        }
+
         public override void onInput()
         {
             /// Do Somehing when user input beans
             beans.transformBeans(inputBeansPos);
+            beans.boxCollider2D.enabled = false;
             
             machineState = MachineState.ON_PROCESS;
         }
@@ -30,14 +41,10 @@ namespace Game
         public override void onDone()
         {
             beans.transformBeans(outputPowderPos);
-            beans.onGrinderOutput();
+            beans.beanState = BeanState.POWDER;
+            beans.boxCollider2D.enabled = true;
 
             boxCollider2D.enabled = false;
-        }
-
-        public override bool isValidatedMachine()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

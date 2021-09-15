@@ -15,8 +15,12 @@ namespace Game
         ROBUSTA
     }
 
+    public interface ICoffeeMachine
+    {
+        public bool isBeansValidated(Beans _beans);
+    }
 
-    public class Beans : MonoBehaviour
+    public class Beans : Draggable
     {
         [Header("Properties")]
         public BeansType beansType;
@@ -25,20 +29,18 @@ namespace Game
 
         [Header("Debug")]
         public SpriteRenderer spriteRenderer;
-        public BoxCollider2D boxCollider2D;
-        public bool isDragged;
-        public Vector2 lastPosition;
+        public enumIgrendients resIgrendients;
         [SerializeField] LayerMask machineLayerMask;
+        [SerializeField] Machine _machine;
 
-        private Grinder grinder;
-        private CoffeeMaker coffeeMaker;
-
-
-        private void Awake()
+        public Machine machine
         {
-            boxCollider2D = GetComponent<BoxCollider2D>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            lastPosition = transform.position;
+            get => _machine;
+            set
+            {
+                _machine.machineState = MachineState.ON_OUTPUT;
+                _machine = value;
+            }
         }
 
         // Trigger from BeanMachine on Instantiate
@@ -47,16 +49,18 @@ namespace Game
             beansType = _beansType;
             if(beansType == BeansType.ARABICA)
             {
+                resIgrendients = enumIgrendients.BEANS_ARABICA;
                 spriteRenderer.color = Color.yellow;
             } else
             {
+                resIgrendients = enumIgrendients.BEANS_ROBUSTA;
                 spriteRenderer.color = Color.grey;
             }
         }
 
-        public void OnMouseDown() => isDragged = true;
+        public override void OnMouseDown() => base.OnMouseDown();
 
-        private void OnMouseDrag()
+        public override void OnMouseDrag()
         {
             if (isDragged)
             {
@@ -66,39 +70,48 @@ namespace Game
             }
         }
 
-        private void OnMouseUp()
+        public override void OnMouseUp()
         {
             getPlacement();
-            isDragged = false;
+            base.OnMouseUp();
         }
 
-        private void getPlacement()
-        {
-            //Debug.Log("get Placement");
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, machineLayerMask);
 
-            if (
-                hit
-                && hit.collider.CompareTag("Grinder")               // Get Grinder from Tag
-                && beanState == BeanState.BEANS                     // beans state as Beans not powder
-                && !hit.transform.GetComponent<Grinder>().beans     // beans in grinder == null
-                )
+        public void getPlacement()
+        {
+            try
             {
-                onGrinderInput(hit.transform.gameObject);
-            } else if (
-                hit
-                && hit.collider.CompareTag("CoffeeMaker")
-                && beanState == BeanState.POWDER
-                && hit.transform.GetComponent<CoffeeMaker>().isValidated(true)
-                )
-            {
-                onCoffeeMakerInput(hit.transform.gameObject);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 2f, machineLayerMask);
+
+                if (hit)
+                {
+                    newRaycastSystem(hit);
+                }
+                else
+                {
+                    throw new System.Exception();
+                }
             }
-            else
+            catch
             {
                 resetPlacement();
             }
         }
+
+        public void newRaycastSystem(RaycastHit2D _hit)
+        {
+            Machine _machine = _hit.transform.GetComponent<Machine>();
+            ICoffeeMachine coffeeMachine = _machine as ICoffeeMachine;
+            if (_machine && coffeeMachine is ICoffeeMachine && coffeeMachine.isBeansValidated(this))
+            {
+                machine = _machine;
+                Debug.Log("Beans Validated");
+            } else
+            {
+                throw new System.Exception();
+            }
+        }
+
 
         public void transformBeans(Transform _transform)
         {
@@ -106,43 +119,6 @@ namespace Game
             transform.position = _transform.position;
             lastPosition = _transform.position;
         }
-
-        #region ON GRINDER
-        private void onGrinderInput(GameObject _grinder)
-        {
-            grinder = _grinder.GetComponent<Grinder>();
-            grinder.beans = this;
-            grinder.machineState = MachineState.ON_INPUT;
-        }
-
-        public void onGrinderProcess()
-        {
-            // do Something
-            boxCollider2D.enabled = false;
-        }
-
-        public void onGrinderOutput()
-        {
-            boxCollider2D.enabled = true;
-            beanState = BeanState.POWDER;
-        }
-        #endregion
-
-        #region ON COFFEE MAKER
-
-        private void onCoffeeMakerInput(GameObject _coffeeMaker)
-        {
-            coffeeMaker = _coffeeMaker.GetComponent<CoffeeMaker>();
-            coffeeMaker.onBeansInput(this);
-            coffeeMaker.machineState = MachineState.ON_PROCESS;
-        }
-
-        public void inputCoffeeMaker(CoffeeMaker _coffeeMaker)
-        {
-            coffeeMaker = _coffeeMaker;
-        }
-
-        #endregion
 
         private void resetPlacement()
         {

@@ -14,13 +14,12 @@ namespace Game
         [Header("Debug")]
         public Tools tools;
 
-        public bool isValidated()
+        public override bool isValidatedMachine(Tools _tools)
         {
-            if (toolPos.childCount > 0
-                && !tools
-                )
+            Debug.Log("onValidate");
+            if (toolPos.childCount < 1 && !_tools.listIgrendients.Contains(resIgrendients))
             {
-                Debug.Log("true");
+                tools = _tools;
                 return true;
             }
             return false;
@@ -46,12 +45,8 @@ namespace Game
 
         public override void onOutput()
         {
+            tools = null;
             base.onOutput();
-        }
-
-        public override bool isValidatedMachine()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -50,10 +50,5 @@ namespace Game
         {
             base.onOutput();
         }
-
-        public override bool isValidatedMachine()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
